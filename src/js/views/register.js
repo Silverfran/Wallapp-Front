@@ -1,11 +1,25 @@
-import { Link } from "react-router-dom";
-import React from "react";
+import { Context } from "../store/appContext";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+
+import React, { useContext } from "react";
+import CryptoJS from "crypto-js";
+
 import "../../styles/register.scss";
 
-export const Register = () => {
+import PropTypes from "prop-types";
+
+export const Register = props => {
+	const { actions } = useContext(Context);
 	const { register, handleSubmit, watch, errors } = useForm();
-	const onSubmit = data => console.log(data);
+
+	const onSubmit = data => {
+		let ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), process.env.SECRET).toString();
+		let bytes = CryptoJS.AES.decrypt(ciphertext, process.env.SECRET);
+		let decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+		actions.sendRegister(ciphertext, props.history);
+	};
 
 	// console.log(watch("example"));
 
@@ -24,6 +38,7 @@ export const Register = () => {
 				<input
 					type="text"
 					required
+					autoComplete="off"
 					id="inputFname"
 					className="form-control"
 					placeholder="First name"
@@ -38,6 +53,7 @@ export const Register = () => {
 				<input
 					type="text"
 					required
+					autoComplete="off"
 					id="inputLname"
 					className="form-control"
 					placeholder="Last name"
@@ -51,6 +67,7 @@ export const Register = () => {
 				<input
 					type="email"
 					required
+					autoComplete="off"
 					id="inputEmail"
 					className="form-control"
 					placeholder="Email address"
@@ -68,6 +85,7 @@ export const Register = () => {
 					className="form-control"
 					placeholder="Password"
 					name="password"
+					autoComplete="off"
 					ref={register({
 						required: true,
 						max: 12,
@@ -87,4 +105,8 @@ export const Register = () => {
 			</form>
 		</div>
 	);
+};
+
+Register.propTypes = {
+	history: PropTypes.object
 };

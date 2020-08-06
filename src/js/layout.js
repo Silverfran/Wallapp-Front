@@ -6,6 +6,7 @@ import injectContext from "./store/appContext";
 
 import { Auth } from "./views/auth";
 import { Register } from "./views/register";
+import { Wall } from "./views/wall";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -20,14 +21,11 @@ const Layout = () => {
 		<div className="d-flex flex-column h-100">
 			<BrowserRouter basename={basename}>
 				<Switch>
-					<Route exact path="/">
-						<Auth />
-					</Route>
-					<Route exact path="/register">
-						<Register />
-					</Route>
+					<Route exact path="/" component={Auth} />
+					<Route exact path="/register" component={Register} />
 					<ScrollToTop>
 						<Navbar />
+						<Route exact path="/wall" component={Wall} />
 					</ScrollToTop>
 
 					<Route>
