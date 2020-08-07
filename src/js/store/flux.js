@@ -73,7 +73,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				myHeaders.append("Content-Type", "application/json");
 
 				var raw = JSON.stringify({ comment: hash });
-				console.log(raw);
 
 				var requestOptions = {
 					method: "POST",
@@ -90,7 +89,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 						return response.text();
 					})
-					.then(result => console.log(result))
 					.catch(error => console.log("error", error));
 			},
 			getComments() {

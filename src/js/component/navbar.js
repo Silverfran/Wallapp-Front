@@ -7,7 +7,6 @@ const Navbar = props => {
 	const { store, actions } = useContext(Context);
 
 	const handledLogout = () => {
-		console.log(props);
 		actions.logout(props.history);
 	};
 

@@ -21,8 +21,6 @@ export const Register = props => {
 		actions.sendRegister(ciphertext, props.history);
 	};
 
-	// console.log(watch("example"));
-
 	return (
 		<div className="text-center mt-5">
 			{/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
