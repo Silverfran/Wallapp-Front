@@ -7,11 +7,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			// Use getActions to call a function within a fuction exampleFunction: () => { getActions().changeColor(0, "green"); },
-
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+			logout(history) {
+				setStore({ session: {} });
+				history.push("/");
 			},
 			signIn(hash, history) {
 				var myHeaders = new Headers();
@@ -28,18 +26,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 
 				fetch(process.env.API_BASE_URL + "/signIn", requestOptions)
-					.then(result => {
-						if (result.status == 200) {
-							setStore({ session: result.json() });
-							console.log(history);
-							history.push("/wall");
+					.then(response => {
+						switch (response.status) {
+							case 200:
+								return response.json();
+							case 401:
+								throw new Error("Wrong password try again");
+							case 404:
+								throw new Error("User not exist try Register first");
+							default:
+								throw new Error("Something contact customer support");
 						}
 					})
-					.catch(error => console.log("error", error));
-			},
-			signGuest: history => {
-				// setStore({ session: { jwt: "", email: "guest@guest" } });
-				// history.push("/wall");
+					.then(result => {
+						setStore({ session: result });
+						history.push("/wall");
+					})
+					.catch(error => alert(error));
 			},
 			sendRegister(hash, history) {
 				var myHeaders = new Headers();
@@ -56,8 +59,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 
 				fetch(process.env.API_BASE_URL + "/signUp", requestOptions)
-					.then(result => {
-						if (result.status == 200) {
+					.then(response => {
+						if (response.status == 200) {
 							history.push("/");
 						} else {
 							alert("There is something wrong");

@@ -12,7 +12,10 @@ export const Wall = () => {
 	const { register, handleSubmit, watch, errors } = useForm();
 
 	const onSubmit = data => {
-		let ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ ...data, user_id: 4 }), process.env.SECRET).toString();
+		let ciphertext = CryptoJS.AES.encrypt(
+			JSON.stringify({ ...data, user_email: store.session.email }),
+			process.env.SECRET
+		).toString();
 		// let bytes = CryptoJS.AES.decrypt(ciphertext, process.env.SECRET);
 		// let decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 		actions.sendComment(ciphertext);
@@ -36,7 +39,7 @@ export const Wall = () => {
 
 	return (
 		<div className="container w-50">
-			{store.session.email != "guest@guest" ? (
+			{typeof store.session.email !== "undefined" ? (
 				<div className="row text-center mt-5  mx-auto">
 					{/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
 					<form className="form-comment col" onSubmit={handleSubmit(onSubmit)}>

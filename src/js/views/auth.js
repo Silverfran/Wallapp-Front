@@ -16,7 +16,6 @@ export const Auth = props => {
 		let ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), process.env.SECRET).toString();
 		let bytes = CryptoJS.AES.decrypt(ciphertext, process.env.SECRET);
 		let decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-		console.log(props.history);
 		actions.signIn(ciphertext, props.history);
 	};
 
@@ -72,9 +71,9 @@ export const Auth = props => {
 				</button>
 			</form>
 			<div className="form-signin pt-0">
-				<button className="btn btn-lg btn-info btn-block" onClick={actions.signGuest(props.history)}>
+				<Link to="/wall" className="btn btn-lg btn-info btn-block">
 					Visit as guest
-				</button>
+				</Link>
 			</div>
 		</div>
 	);

@@ -8,7 +8,7 @@ import { Auth } from "./views/auth";
 import { Register } from "./views/register";
 import { Wall } from "./views/wall";
 
-import { Navbar } from "./component/navbar";
+import Navbar from "./component/navbar";
 import { Footer } from "./component/footer";
 
 //create your first component

@@ -1,7 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Context } from "../store/appContext";
+import { Link, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
-export const Navbar = () => {
+const Navbar = props => {
+	const { store, actions } = useContext(Context);
+
+	const handledLogout = () => {
+		console.log(props);
+		actions.logout(props.history);
+	};
+
 	return (
 		<nav className="navbar navbar-light bg-light mb-3">
 			<Link to="/">
@@ -13,8 +22,16 @@ export const Navbar = () => {
 				</span>
 			</Link>
 			<div className="ml-auto">
-				<button className="btn btn-primary">Log out!</button>
+				<button className="btn btn-primary" onClick={() => handledLogout()}>
+					{typeof store.session.email !== "undefined" ? "Log out" : "Sign in"}
+				</button>
 			</div>
 		</nav>
 	);
 };
+
+Navbar.propTypes = {
+	history: PropTypes.object
+};
+
+export default withRouter(Navbar);
